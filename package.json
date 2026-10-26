@@ -1,0 +1,12 @@
+{
+  "name": "vm-intellect",
+  "private": true,
+  "version": "0.1.0",
+  "scripts": {
+    "dev": "pnpm -r --parallel --if-present dev",
+    "typecheck": "pnpm -r --if-present typecheck"
+  },
+  "devDependencies": {
+    "typescript": "^7.0.2"
+  }
+}

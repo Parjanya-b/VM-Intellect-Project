@@ -1,0 +1,12 @@
+node_modules
+dist
+.data
+*.db
+*.db-wal
+*.db-shm
+.env
+*.log
+coverage
+.DS_Store
+.venv
+__pycache__
