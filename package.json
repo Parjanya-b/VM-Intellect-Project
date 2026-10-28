@@ -8,6 +8,7 @@
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "lint": "pnpm -r --if-present lint",
+    "test": "pnpm -r --if-present test",
     "prepare": "husky"
   },
   "devDependencies": {
