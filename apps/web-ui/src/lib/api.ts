@@ -14,7 +14,13 @@ export class ApiError extends Error {
   traceId?: string;
   details?: Record<string, string[]>;
 
-  constructor(status: number, code: string, message: string, traceId?: string, details?: Record<string, string[]>) {
+  constructor(
+    status: number,
+    code: string,
+    message: string,
+    traceId?: string,
+    details?: Record<string, string[]>,
+  ) {
     super(message);
     this.status = status;
     this.code = code;
@@ -23,7 +29,10 @@ export class ApiError extends Error {
   }
 }
 
-export async function api<T>(path: string, init: { method?: string; body?: unknown } = {}): Promise<T> {
+export async function api<T>(
+  path: string,
+  init: { method?: string; body?: unknown } = {},
+): Promise<T> {
   const token = tokenStore.get();
   let res: Response;
   try {
@@ -43,7 +52,13 @@ export async function api<T>(path: string, init: { method?: string; body?: unkno
   const data = await res.json().catch(() => null);
   if (!res.ok) {
     const e = (data as ApiErrorBody | null)?.error;
-    throw new ApiError(res.status, e?.code ?? "UNKNOWN", e?.message ?? "Request failed.", e?.traceId, e?.details);
+    throw new ApiError(
+      res.status,
+      e?.code ?? "UNKNOWN",
+      e?.message ?? "Request failed.",
+      e?.traceId,
+      e?.details,
+    );
   }
   return data as T;
 }

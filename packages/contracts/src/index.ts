@@ -1,7 +1,13 @@
 import { z } from "zod";
 
 /* ---------- Personas (change the view, never permissions) ---------- */
-export const PERSONAS = ["student", "technician", "engineer", "manufacturer", "researcher"] as const;
+export const PERSONAS = [
+  "student",
+  "technician",
+  "engineer",
+  "manufacturer",
+  "researcher",
+] as const;
 export const PersonaSchema = z.enum(PERSONAS);
 export type Persona = z.infer<typeof PersonaSchema>;
 

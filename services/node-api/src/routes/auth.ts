@@ -1,13 +1,18 @@
 import { Router } from "express";
 import { randomUUID } from "node:crypto";
 import { hash, verify } from "@node-rs/argon2";
-import { SigninRequestSchema, SignupRequestSchema, type AuthResponse, type Role } from "@vmi/contracts";
+import {
+  SigninRequestSchema,
+  SignupRequestSchema,
+  type AuthResponse,
+  type Role,
+} from "@vmi/contracts";
 import { db } from "../db";
 import { config } from "../config";
 import { AppError } from "../errors";
 import { parseBody } from "../validate";
 import { audit } from "../audit";
-import { createSession, requireAuth, sha256, toPublicUser, type UserRow } from "../auth/session";
+import { createSession, requireAuth, toPublicUser, type UserRow } from "../auth/session";
 
 export const authRouter = Router();
 
@@ -64,7 +69,11 @@ authRouter.post("/signin", async (req, res) => {
   if (!row) throw invalid(); // same message as a wrong password: don't reveal which usernames exist
 
   if (row.locked_until && row.locked_until > new Date().toISOString()) {
-    throw new AppError(429, "ACCOUNT_LOCKED", "Too many failed attempts. Please try again in a few minutes.");
+    throw new AppError(
+      429,
+      "ACCOUNT_LOCKED",
+      "Too many failed attempts. Please try again in a few minutes.",
+    );
   }
 
   const ok = await verify(row.password_hash, password);

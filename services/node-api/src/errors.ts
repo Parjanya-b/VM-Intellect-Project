@@ -15,6 +15,7 @@ export class AppError extends Error {
 }
 
 export const errorHandler: ErrorRequestHandler = (err, _req, res, _next) => {
+  void _next;
   const traceId = res.locals.traceId as string;
 
   if (err instanceof AppError) {
@@ -24,12 +25,18 @@ export const errorHandler: ErrorRequestHandler = (err, _req, res, _next) => {
     return;
   }
   if ((err as { type?: string })?.type === "entity.parse.failed") {
-    res.status(400).json({ error: { code: "BAD_JSON", message: "Request body is not valid JSON.", traceId } });
+    res
+      .status(400)
+      .json({ error: { code: "BAD_JSON", message: "Request body is not valid JSON.", traceId } });
     return;
   }
 
   logger.error({ err, traceId }, "Unhandled error");
   res.status(500).json({
-    error: { code: "INTERNAL", message: "Something went wrong. Please quote the trace ID when reporting this.", traceId },
+    error: {
+      code: "INTERNAL",
+      message: "Something went wrong. Please quote the trace ID when reporting this.",
+      traceId,
+    },
   });
 };

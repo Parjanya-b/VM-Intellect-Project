@@ -21,7 +21,10 @@ type FormValues = z.infer<typeof schema>;
 export default function Signup() {
   const navigate = useNavigate();
   const { user, completeSignIn } = useAuth();
-  const health = useQuery({ queryKey: ["health"], queryFn: () => api<HealthResponse>("/system/health") });
+  const health = useQuery({
+    queryKey: ["health"],
+    queryFn: () => api<HealthResponse>("/system/health"),
+  });
   const [serverError, setServerError] = useState<string | null>(null);
   const {
     register,
@@ -38,7 +41,11 @@ export default function Signup() {
   const onSubmit = handleSubmit(async (values) => {
     setServerError(null);
     try {
-      const body = { fullName: values.fullName, username: values.username, password: values.password };
+      const body = {
+        fullName: values.fullName,
+        username: values.username,
+        password: values.password,
+      };
       const res = await api<AuthResponse>("/auth/signup", { method: "POST", body });
       completeSignIn(res);
       navigate("/dashboard", { replace: true });
@@ -60,27 +67,59 @@ export default function Signup() {
         VM INTELLECT&nbsp;&nbsp;·&nbsp;&nbsp;Local-First · works offline
       </div>
 
-      <main style={{ minHeight: "calc(100vh - 33px)", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "2rem 1rem" }}>
+      <main
+        style={{
+          minHeight: "calc(100vh - 33px)",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          justifyContent: "center",
+          padding: "2rem 1rem",
+        }}
+      >
         <div className="card" style={{ width: "100%", maxWidth: "420px" }}>
-          <div style={{ background: "linear-gradient(90deg, #0B2A5C, #6FA8E6)", height: "3px", borderRadius: "2px 2px 0 0", margin: "-1.5rem -1.5rem 1.5rem" }} />
+          <div
+            style={{
+              background: "linear-gradient(90deg, #0B2A5C, #6FA8E6)",
+              height: "3px",
+              borderRadius: "2px 2px 0 0",
+              margin: "-1.5rem -1.5rem 1.5rem",
+            }}
+          />
 
           {/* Logo */}
           <div style={{ display: "flex", justifyContent: "center", marginBottom: "1.5rem" }}>
             <BrandLogo variant="lockup" size={140} />
           </div>
 
-          <h1 className="text-2xl font-semibold" style={{ color: "#0B2A5C", marginBottom: "0.25rem", textAlign: "center" }}>
+          <h1
+            className="text-2xl font-semibold"
+            style={{ color: "#0B2A5C", marginBottom: "0.25rem", textAlign: "center" }}
+          >
             {firstUser ? "Create the administrator account" : "Create account"}
           </h1>
-          <p className="text-sm" style={{ color: "#64748b", textAlign: "center", marginBottom: "1.5rem" }}>
+          <p
+            className="text-sm"
+            style={{ color: "#64748b", textAlign: "center", marginBottom: "1.5rem" }}
+          >
             {firstUser
               ? "This is the first account on this computer, so it becomes the Admin."
               : "Your account stays on this computer. There is no cloud login."}
           </p>
 
           <form onSubmit={onSubmit} noValidate className="space-y-4">
-            <Field label="Full name" autoComplete="name" error={errors.fullName?.message} {...register("fullName")} />
-            <Field label="Username" autoComplete="username" error={errors.username?.message} {...register("username")} />
+            <Field
+              label="Full name"
+              autoComplete="name"
+              error={errors.fullName?.message}
+              {...register("fullName")}
+            />
+            <Field
+              label="Username"
+              autoComplete="username"
+              error={errors.username?.message}
+              {...register("username")}
+            />
             <Field
               label="Password"
               type="password"
@@ -107,7 +146,11 @@ export default function Signup() {
 
           <p className="mt-6 text-sm" style={{ color: "#64748b", textAlign: "center" }}>
             Already have an account?{" "}
-            <Link to="/signin" style={{ color: "#0B2A5C", fontWeight: 600 }} className="hover:underline">
+            <Link
+              to="/signin"
+              style={{ color: "#0B2A5C", fontWeight: 600 }}
+              className="hover:underline"
+            >
               Sign in
             </Link>
           </p>

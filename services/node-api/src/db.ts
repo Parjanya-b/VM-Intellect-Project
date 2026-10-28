@@ -12,7 +12,9 @@ function runMigrations(db: Database.Database) {
   )`);
 
   const applied = new Set(
-    (db.prepare("SELECT version FROM schema_migrations").all() as { version: number }[]).map((r) => r.version),
+    (db.prepare("SELECT version FROM schema_migrations").all() as { version: number }[]).map(
+      (r) => r.version,
+    ),
   );
 
   const files = fs
