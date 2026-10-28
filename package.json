@@ -4,9 +4,12 @@
   "version": "0.1.0",
   "scripts": {
     "dev": "pnpm -r --parallel --if-present dev",
-    "typecheck": "pnpm -r --if-present typecheck"
+    "typecheck": "pnpm -r --if-present typecheck",
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
   },
   "devDependencies": {
+    "prettier": "^3.9.10",
     "typescript": "^7.0.2"
   }
 }

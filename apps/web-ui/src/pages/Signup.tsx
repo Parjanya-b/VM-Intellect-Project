@@ -54,7 +54,9 @@ export default function Signup() {
 
   return (
     <main className="mx-auto max-w-md px-6 py-16">
-      <h1 className="text-2xl font-semibold">{firstUser ? "Create the administrator account" : "Create your account"}</h1>
+      <h1 className="text-2xl font-semibold">
+        {firstUser ? "Create the administrator account" : "Create your account"}
+      </h1>
       <p className="mt-1 text-sm text-muted">
         {firstUser
           ? "This is the first account on this computer, so it becomes the Admin."
@@ -62,8 +64,18 @@ export default function Signup() {
       </p>
 
       <form onSubmit={onSubmit} noValidate className="mt-6 space-y-4">
-        <Field label="Full name" autoComplete="name" error={errors.fullName?.message} {...register("fullName")} />
-        <Field label="Username" autoComplete="username" error={errors.username?.message} {...register("username")} />
+        <Field
+          label="Full name"
+          autoComplete="name"
+          error={errors.fullName?.message}
+          {...register("fullName")}
+        />
+        <Field
+          label="Username"
+          autoComplete="username"
+          error={errors.username?.message}
+          {...register("username")}
+        />
         <Field
           label="Password"
           type="password"

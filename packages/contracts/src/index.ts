@@ -19,10 +19,7 @@ const usernameSchema = z
   .max(32, "At most 32 characters")
   .regex(/^[a-z0-9._-]+$/, "Use letters, numbers, dot, dash or underscore");
 
-const passwordSchema = z
-  .string()
-  .min(8, "At least 8 characters")
-  .max(128, "At most 128 characters");
+const passwordSchema = z.string().min(8, "At least 8 characters").max(128, "At most 128 characters");
 
 export const SignupRequestSchema = z.object({
   fullName: z.string().trim().min(2, "Enter your name").max(80),

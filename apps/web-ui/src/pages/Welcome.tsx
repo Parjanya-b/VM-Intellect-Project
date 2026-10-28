@@ -22,12 +22,15 @@ export default function Welcome() {
       <p className="font-mono text-xs uppercase tracking-widest text-muted">VM Intellect</p>
       <h1 className="mt-2 text-3xl font-semibold">Welcome. Who is using VM Intellect today?</h1>
       <p className="mt-2 max-w-2xl text-muted">
-        This only changes how screens are arranged and how much explanation you see. It never changes what you are
-        allowed to do.
+        This only changes how screens are arranged and how much explanation you see. It never changes what you
+        are allowed to do.
       </p>
 
       {health.isError && (
-        <div role="alert" className="mt-6 rounded-md border border-danger/30 bg-red-50 p-4 text-sm text-danger">
+        <div
+          role="alert"
+          className="mt-6 rounded-md border border-danger/30 bg-red-50 p-4 text-sm text-danger"
+        >
           {(health.error as Error).message}
           <Button variant="secondary" className="ml-4" onClick={() => health.refetch()}>
             Retry

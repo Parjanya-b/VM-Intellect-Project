@@ -21,7 +21,11 @@ export function toPublicUser(row: UserRow): PublicUser {
 export function createSession(userId: string) {
   const token = randomBytes(32).toString("base64url");
   const expiresAt = new Date(Date.now() + config.sessionHours * 3_600_000).toISOString();
-  db.prepare("INSERT INTO sessions (id, user_id, expires_at) VALUES (?, ?, ?)").run(sha256(token), userId, expiresAt);
+  db.prepare("INSERT INTO sessions (id, user_id, expires_at) VALUES (?, ?, ?)").run(
+    sha256(token),
+    userId,
+    expiresAt,
+  );
   return { token, expiresAt };
 }
 

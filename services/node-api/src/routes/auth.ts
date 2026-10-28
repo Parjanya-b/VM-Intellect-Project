@@ -58,8 +58,7 @@ authRouter.post("/signin", async (req, res) => {
       "SELECT id, username, full_name, role, password_hash, failed_attempts, locked_until FROM users WHERE username = ?",
     )
     .get(username) as
-    | (UserRow & { password_hash: string; failed_attempts: number; locked_until: string | null })
-    | undefined;
+    (UserRow & { password_hash: string; failed_attempts: number; locked_until: string | null }) | undefined;
 
   if (!row) throw invalid(); // same message as a wrong password: don't reveal which usernames exist
 

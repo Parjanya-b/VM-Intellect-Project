@@ -39,7 +39,12 @@ export default function Signin() {
       <p className="mt-1 text-sm text-muted">Local account on this computer.</p>
 
       <form onSubmit={onSubmit} noValidate className="mt-6 space-y-4">
-        <Field label="Username" autoComplete="username" error={errors.username?.message} {...register("username")} />
+        <Field
+          label="Username"
+          autoComplete="username"
+          error={errors.username?.message}
+          {...register("username")}
+        />
         <Field
           label="Password"
           type="password"

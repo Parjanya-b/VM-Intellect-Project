@@ -7,9 +7,19 @@ import { useAuth } from "../auth/AuthContext";
 import { getPersona, PERSONA_INFO } from "../lib/persona";
 
 const ACTIONS = [
-  { to: "/ask", label: "Ask a question", hint: "Quick, source-linked answer. No files needed.", icon: MessageCircleQuestion },
+  {
+    to: "/ask",
+    label: "Ask a question",
+    hint: "Quick, source-linked answer. No files needed.",
+    icon: MessageCircleQuestion,
+  },
   { to: "/jobs/new", label: "New job", hint: "Upload a drawing and run the full workflow.", icon: FilePlus2 },
-  { to: "/knowledge", label: "Knowledge", hint: "Browse machines, materials, tools and guides.", icon: BookOpen },
+  {
+    to: "/knowledge",
+    label: "Knowledge",
+    hint: "Browse machines, materials, tools and guides.",
+    icon: BookOpen,
+  },
 ];
 
 function StatusItem({ label, value, ok }: { label: string; value: string; ok?: boolean }) {
@@ -56,7 +66,10 @@ export default function Dashboard() {
           ok={health.isError ? false : h?.offlineReady}
         />
         <StatusItem label="Core bundle" value={h?.coreBundleVersion ?? "Not installed yet"} />
-        <StatusItem label="Last backup" value={h?.lastBackupAt ? new Date(h.lastBackupAt).toLocaleString() : "No backup yet"} />
+        <StatusItem
+          label="Last backup"
+          value={h?.lastBackupAt ? new Date(h.lastBackupAt).toLocaleString() : "No backup yet"}
+        />
         <StatusItem label="Database schema" value={h ? `v${h.schemaVersion}` : "…"} />
       </div>
 
