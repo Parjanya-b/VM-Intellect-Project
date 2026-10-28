@@ -10,6 +10,7 @@ import { getPersona } from "../lib/persona";
 import { useAuth } from "../auth/AuthContext";
 import { Button } from "../components/Button";
 import { Field } from "../components/Field";
+import { BrandLogo } from "../components/BrandLogo";
 
 const schema = SignupRequestSchema.extend({ confirmPassword: z.string() }).refine(
   (d) => d.password === d.confirmPassword,
@@ -53,47 +54,68 @@ export default function Signup() {
   });
 
   return (
-    <main className="mx-auto max-w-md px-6 py-16">
-      <h1 className="text-2xl font-semibold">{firstUser ? "Create the administrator account" : "Create your account"}</h1>
-      <p className="mt-1 text-sm text-muted">
-        {firstUser
-          ? "This is the first account on this computer, so it becomes the Admin."
-          : "Your account stays on this computer. There is no cloud login."}
-      </p>
+    <>
+      {/* Global top strip */}
+      <div className="top-strip">
+        VM INTELLECT&nbsp;&nbsp;·&nbsp;&nbsp;Local-First · works offline
+      </div>
 
-      <form onSubmit={onSubmit} noValidate className="mt-6 space-y-4">
-        <Field label="Full name" autoComplete="name" error={errors.fullName?.message} {...register("fullName")} />
-        <Field label="Username" autoComplete="username" error={errors.username?.message} {...register("username")} />
-        <Field
-          label="Password"
-          type="password"
-          autoComplete="new-password"
-          error={errors.password?.message}
-          {...register("password")}
-        />
-        <Field
-          label="Confirm password"
-          type="password"
-          autoComplete="new-password"
-          error={errors.confirmPassword?.message}
-          {...register("confirmPassword")}
-        />
-        {serverError && (
-          <p role="alert" className="text-sm text-danger">
-            {serverError}
+      <main style={{ minHeight: "calc(100vh - 33px)", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "2rem 1rem" }}>
+        <div className="card" style={{ width: "100%", maxWidth: "420px" }}>
+          <div style={{ background: "linear-gradient(90deg, #0B2A5C, #6FA8E6)", height: "3px", borderRadius: "2px 2px 0 0", margin: "-1.5rem -1.5rem 1.5rem" }} />
+
+          {/* Logo */}
+          <div style={{ display: "flex", justifyContent: "center", marginBottom: "1.5rem" }}>
+            <BrandLogo variant="lockup" size={140} />
+          </div>
+
+          <h1 className="text-2xl font-semibold" style={{ color: "#0B2A5C", marginBottom: "0.25rem", textAlign: "center" }}>
+            {firstUser ? "Create the administrator account" : "Create account"}
+          </h1>
+          <p className="text-sm" style={{ color: "#64748b", textAlign: "center", marginBottom: "1.5rem" }}>
+            {firstUser
+              ? "This is the first account on this computer, so it becomes the Admin."
+              : "Your account stays on this computer. There is no cloud login."}
           </p>
-        )}
-        <Button type="submit" className="w-full" disabled={isSubmitting}>
-          {isSubmitting ? "Creating…" : "Create account"}
-        </Button>
-      </form>
 
-      <p className="mt-6 text-sm text-muted">
-        Already have an account?{" "}
-        <Link to="/signin" className="text-accent hover:underline">
-          Sign in
-        </Link>
-      </p>
-    </main>
+          <form onSubmit={onSubmit} noValidate className="space-y-4">
+            <Field label="Full name" autoComplete="name" error={errors.fullName?.message} {...register("fullName")} />
+            <Field label="Username" autoComplete="username" error={errors.username?.message} {...register("username")} />
+            <Field
+              label="Password"
+              type="password"
+              autoComplete="new-password"
+              error={errors.password?.message}
+              {...register("password")}
+            />
+            <Field
+              label="Confirm password"
+              type="password"
+              autoComplete="new-password"
+              error={errors.confirmPassword?.message}
+              {...register("confirmPassword")}
+            />
+            {serverError && (
+              <p role="alert" className="text-sm text-danger">
+                {serverError}
+              </p>
+            )}
+            <Button type="submit" className="w-full" disabled={isSubmitting}>
+              {isSubmitting ? "Creating…" : "Create account"}
+            </Button>
+          </form>
+
+          <p className="mt-6 text-sm" style={{ color: "#64748b", textAlign: "center" }}>
+            Already have an account?{" "}
+            <Link to="/signin" style={{ color: "#0B2A5C", fontWeight: 600 }} className="hover:underline">
+              Sign in
+            </Link>
+          </p>
+        </div>
+        <p className="mt-4 text-xs" style={{ color: "#94A3B8" }}>
+          INTELLIGENCE THAT EMPOWERS
+        </p>
+      </main>
+    </>
   );
 }
