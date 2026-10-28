@@ -6,7 +6,9 @@ export const systemRouter = Router();
 
 systemRouter.get("/health", (_req, res) => {
   const { n } = db.prepare("SELECT COUNT(*) AS n FROM users").get() as { n: number };
-  const { v } = db.prepare("SELECT COALESCE(MAX(version), 0) AS v FROM schema_migrations").get() as {
+  const { v } = db
+    .prepare("SELECT COALESCE(MAX(version), 0) AS v FROM schema_migrations")
+    .get() as {
     v: number;
   };
 

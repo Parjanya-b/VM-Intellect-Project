@@ -91,7 +91,9 @@ describe("auth API", () => {
 
   it("never stores plain passwords or raw tokens", async () => {
     const { default: Database } = await import("better-sqlite3");
-    const db = new Database(path.join(process.env.VMI_DATA_DIR!, "vm-intellect.db"), { readonly: true });
+    const db = new Database(path.join(process.env.VMI_DATA_DIR!, "vm-intellect.db"), {
+      readonly: true,
+    });
     const user = db.prepare("SELECT password_hash FROM users WHERE username = 'first'").get() as {
       password_hash: string;
     };

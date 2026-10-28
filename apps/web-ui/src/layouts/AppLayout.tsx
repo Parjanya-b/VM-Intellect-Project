@@ -12,7 +12,9 @@ export default function AppLayout() {
   return (
     <div className="min-h-screen">
       {/* Global top strip */}
-      <div className="top-strip">VM INTELLECT&nbsp;&nbsp;·&nbsp;&nbsp;Local-First · works offline</div>
+      <div className="top-strip">
+        VM INTELLECT&nbsp;&nbsp;·&nbsp;&nbsp;Local-First · works offline
+      </div>
 
       {/* Main header */}
       <header className="border-b border-line bg-white relative">
@@ -36,7 +38,14 @@ export default function AppLayout() {
           >
             <BrandLogo variant="mark" size={36} />
             <span className="flex flex-col leading-none">
-              <span style={{ color: "#0B2A5C", fontWeight: 700, fontSize: "16px", letterSpacing: "-0.01em" }}>
+              <span
+                style={{
+                  color: "#0B2A5C",
+                  fontWeight: 700,
+                  fontSize: "16px",
+                  letterSpacing: "-0.01em",
+                }}
+              >
                 VM <span style={{ color: "#6FA8E6" }}>Intellect</span>
               </span>
             </span>
@@ -57,7 +66,12 @@ export default function AppLayout() {
               {user?.fullName}{" "}
               <span
                 className="font-mono text-xs uppercase"
-                style={{ color: "#6FA8E6", background: "#EEF5FC", padding: "2px 6px", borderRadius: "4px" }}
+                style={{
+                  color: "#6FA8E6",
+                  background: "#EEF5FC",
+                  padding: "2px 6px",
+                  borderRadius: "4px",
+                }}
               >
                 ({user?.role})
               </span>

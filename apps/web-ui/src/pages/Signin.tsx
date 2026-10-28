@@ -37,7 +37,9 @@ export default function Signin() {
   return (
     <>
       {/* Global top strip */}
-      <div className="top-strip">VM INTELLECT&nbsp;&nbsp;·&nbsp;&nbsp;Local-First · works offline</div>
+      <div className="top-strip">
+        VM INTELLECT&nbsp;&nbsp;·&nbsp;&nbsp;Local-First · works offline
+      </div>
 
       <main
         style={{
@@ -70,7 +72,10 @@ export default function Signin() {
           >
             Sign in
           </h1>
-          <p className="text-sm" style={{ color: "#64748b", textAlign: "center", marginBottom: "1.5rem" }}>
+          <p
+            className="text-sm"
+            style={{ color: "#64748b", textAlign: "center", marginBottom: "1.5rem" }}
+          >
             Local account on this computer.
           </p>
 
@@ -100,7 +105,11 @@ export default function Signin() {
 
           <p className="mt-6 text-sm" style={{ color: "#64748b", textAlign: "center" }}>
             New here?{" "}
-            <Link to="/signup" style={{ color: "#0B2A5C", fontWeight: 600 }} className="hover:underline">
+            <Link
+              to="/signup"
+              style={{ color: "#0B2A5C", fontWeight: 600 }}
+              className="hover:underline"
+            >
               Create an account
             </Link>
             <span className="mx-2">·</span>

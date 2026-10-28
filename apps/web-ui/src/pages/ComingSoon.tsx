@@ -32,7 +32,12 @@ export default function ComingSoon() {
           The screen{" "}
           <span
             className="font-mono"
-            style={{ background: "#EEF5FC", padding: "1px 6px", borderRadius: "4px", color: "#0B2A5C" }}
+            style={{
+              background: "#EEF5FC",
+              padding: "1px 6px",
+              borderRadius: "4px",
+              color: "#0B2A5C",
+            }}
           >
             {pathname}
           </span>{" "}

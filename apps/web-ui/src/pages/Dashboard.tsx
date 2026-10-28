@@ -13,7 +13,12 @@ const ACTIONS = [
     hint: "Quick, source-linked answer. No files needed.",
     icon: MessageCircleQuestion,
   },
-  { to: "/jobs/new", label: "New job", hint: "Upload a drawing and run the full workflow.", icon: FilePlus2 },
+  {
+    to: "/jobs/new",
+    label: "New job",
+    hint: "Upload a drawing and run the full workflow.",
+    icon: FilePlus2,
+  },
   {
     to: "/knowledge",
     label: "Knowledge",
@@ -27,11 +32,19 @@ function StatusItem({ label, value, ok }: { label: string; value: string; ok?: b
     <div>
       <p
         className="font-mono"
-        style={{ fontSize: "10px", textTransform: "uppercase", letterSpacing: "0.08em", color: "#64748b" }}
+        style={{
+          fontSize: "10px",
+          textTransform: "uppercase",
+          letterSpacing: "0.08em",
+          color: "#64748b",
+        }}
       >
         {label}
       </p>
-      <p className="mt-0.5 flex items-center gap-2 text-sm font-medium" style={{ color: "#0B2A5C" }}>
+      <p
+        className="mt-0.5 flex items-center gap-2 text-sm font-medium"
+        style={{ color: "#0B2A5C" }}
+      >
         {ok !== undefined && (
           <span
             style={{
@@ -52,7 +65,10 @@ function StatusItem({ label, value, ok }: { label: string; value: string; ok?: b
 function EmptyPanel({ title, text }: { title: string; text: string }) {
   return (
     <section className="card">
-      <h2 className="font-semibold" style={{ color: "#0B2A5C", fontSize: "15px", marginBottom: "0.5rem" }}>
+      <h2
+        className="font-semibold"
+        style={{ color: "#0B2A5C", fontSize: "15px", marginBottom: "0.5rem" }}
+      >
         {title}
       </h2>
       <p className="text-sm" style={{ color: "#64748b" }}>
@@ -94,7 +110,13 @@ export default function Dashboard() {
         >
           <StatusItem
             label="Offline status"
-            value={health.isError ? "Service unreachable" : h?.offlineReady ? "Offline ready" : "Checking…"}
+            value={
+              health.isError
+                ? "Service unreachable"
+                : h?.offlineReady
+                  ? "Offline ready"
+                  : "Checking…"
+            }
             ok={health.isError ? false : h?.offlineReady}
           />
           <StatusItem label="Core bundle" value={h?.coreBundleVersion ?? "Not installed yet"} />
@@ -109,7 +131,11 @@ export default function Dashboard() {
       {/* Three big action cards */}
       <div
         className="mt-6"
-        style={{ display: "grid", gap: "1rem", gridTemplateColumns: "repeat(auto-fill, minmax(220px, 1fr))" }}
+        style={{
+          display: "grid",
+          gap: "1rem",
+          gridTemplateColumns: "repeat(auto-fill, minmax(220px, 1fr))",
+        }}
       >
         {ACTIONS.map(({ to, label, hint, icon: Icon }) => (
           <Link
@@ -124,7 +150,8 @@ export default function Dashboard() {
             }}
             onMouseEnter={(e) => {
               (e.currentTarget as HTMLAnchorElement).style.transform = "translateY(-2px)";
-              (e.currentTarget as HTMLAnchorElement).style.boxShadow = "0 4px 16px rgba(11, 42, 92, 0.12)";
+              (e.currentTarget as HTMLAnchorElement).style.boxShadow =
+                "0 4px 16px rgba(11, 42, 92, 0.12)";
             }}
             onMouseLeave={(e) => {
               (e.currentTarget as HTMLAnchorElement).style.transform = "";
@@ -145,7 +172,9 @@ export default function Dashboard() {
             >
               <Icon style={{ width: "22px", height: "22px", color: "#0B2A5C" }} aria-hidden />
             </div>
-            <h2 style={{ fontSize: "16px", fontWeight: 600, color: "#0B2A5C", margin: "0 0 0.25rem" }}>
+            <h2
+              style={{ fontSize: "16px", fontWeight: 600, color: "#0B2A5C", margin: "0 0 0.25rem" }}
+            >
               {label}
             </h2>
             <p style={{ fontSize: "13px", color: "#64748b", margin: 0 }}>{hint}</p>
@@ -156,9 +185,16 @@ export default function Dashboard() {
       {/* Recent jobs and review queue */}
       <div
         className="mt-6"
-        style={{ display: "grid", gap: "1rem", gridTemplateColumns: "repeat(auto-fill, minmax(300px, 1fr))" }}
+        style={{
+          display: "grid",
+          gap: "1rem",
+          gridTemplateColumns: "repeat(auto-fill, minmax(300px, 1fr))",
+        }}
       >
-        <EmptyPanel title="Recent jobs" text="No jobs yet. Start with New job to see your work here." />
+        <EmptyPanel
+          title="Recent jobs"
+          text="No jobs yet. Start with New job to see your work here."
+        />
         <EmptyPanel title="Waiting for your review" text="Nothing needs your review right now." />
       </div>
     </main>

@@ -21,7 +21,10 @@ type FormValues = z.infer<typeof schema>;
 export default function Signup() {
   const navigate = useNavigate();
   const { user, completeSignIn } = useAuth();
-  const health = useQuery({ queryKey: ["health"], queryFn: () => api<HealthResponse>("/system/health") });
+  const health = useQuery({
+    queryKey: ["health"],
+    queryFn: () => api<HealthResponse>("/system/health"),
+  });
   const [serverError, setServerError] = useState<string | null>(null);
   const {
     register,
@@ -38,7 +41,11 @@ export default function Signup() {
   const onSubmit = handleSubmit(async (values) => {
     setServerError(null);
     try {
-      const body = { fullName: values.fullName, username: values.username, password: values.password };
+      const body = {
+        fullName: values.fullName,
+        username: values.username,
+        password: values.password,
+      };
       const res = await api<AuthResponse>("/auth/signup", { method: "POST", body });
       completeSignIn(res);
       navigate("/dashboard", { replace: true });
@@ -56,7 +63,9 @@ export default function Signup() {
   return (
     <>
       {/* Global top strip */}
-      <div className="top-strip">VM INTELLECT&nbsp;&nbsp;·&nbsp;&nbsp;Local-First · works offline</div>
+      <div className="top-strip">
+        VM INTELLECT&nbsp;&nbsp;·&nbsp;&nbsp;Local-First · works offline
+      </div>
 
       <main
         style={{
@@ -89,7 +98,10 @@ export default function Signup() {
           >
             {firstUser ? "Create the administrator account" : "Create account"}
           </h1>
-          <p className="text-sm" style={{ color: "#64748b", textAlign: "center", marginBottom: "1.5rem" }}>
+          <p
+            className="text-sm"
+            style={{ color: "#64748b", textAlign: "center", marginBottom: "1.5rem" }}
+          >
             {firstUser
               ? "This is the first account on this computer, so it becomes the Admin."
               : "Your account stays on this computer. There is no cloud login."}
@@ -134,7 +146,11 @@ export default function Signup() {
 
           <p className="mt-6 text-sm" style={{ color: "#64748b", textAlign: "center" }}>
             Already have an account?{" "}
-            <Link to="/signin" style={{ color: "#0B2A5C", fontWeight: 600 }} className="hover:underline">
+            <Link
+              to="/signin"
+              style={{ color: "#0B2A5C", fontWeight: 600 }}
+              className="hover:underline"
+            >
               Sign in
             </Link>
           </p>

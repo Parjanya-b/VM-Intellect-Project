@@ -39,7 +39,10 @@ const PERSONA_DISPLAY: Record<string, { title: string; bullets: string[]; color:
 export default function Welcome() {
   const navigate = useNavigate();
   const { user } = useAuth();
-  const health = useQuery({ queryKey: ["health"], queryFn: () => api<HealthResponse>("/system/health") });
+  const health = useQuery({
+    queryKey: ["health"],
+    queryFn: () => api<HealthResponse>("/system/health"),
+  });
 
   function choose(p: Persona) {
     savePersona(p);
@@ -50,7 +53,9 @@ export default function Welcome() {
   return (
     <div>
       {/* Global top strip */}
-      <div className="top-strip">VM INTELLECT&nbsp;&nbsp;·&nbsp;&nbsp;Local-First · works offline</div>
+      <div className="top-strip">
+        VM INTELLECT&nbsp;&nbsp;·&nbsp;&nbsp;Local-First · works offline
+      </div>
 
       <main className="mx-auto max-w-5xl px-4 py-10">
         {/* Hero card */}
@@ -63,10 +68,15 @@ export default function Welcome() {
           </h1>
           <p
             className="mt-2"
-            style={{ color: "#64748b", fontSize: "14px", maxWidth: "480px", margin: "0.5rem auto 0" }}
+            style={{
+              color: "#64748b",
+              fontSize: "14px",
+              maxWidth: "480px",
+              margin: "0.5rem auto 0",
+            }}
           >
-            This only changes how screens are arranged and how much explanation you see. It never changes what
-            you are allowed to do.
+            This only changes how screens are arranged and how much explanation you see. It never
+            changes what you are allowed to do.
           </p>
           {/* Version pill */}
           <div style={{ marginTop: "1rem", display: "flex", justifyContent: "center" }}>
@@ -109,7 +119,10 @@ export default function Welcome() {
               margin: "-1.5rem -1.5rem 1.5rem",
             }}
           />
-          <SectionHeader label="Step 1: Who are you?" caption="Choose your role to personalise the view" />
+          <SectionHeader
+            label="Step 1: Who are you?"
+            caption="Choose your role to personalise the view"
+          />
 
           <div
             style={{
@@ -143,7 +156,8 @@ export default function Welcome() {
                   className="focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-600 disabled:opacity-50 hover:shadow-md"
                   onMouseEnter={(e) => {
                     (e.currentTarget as HTMLButtonElement).style.borderColor = display.color;
-                    (e.currentTarget as HTMLButtonElement).style.boxShadow = `0 0 0 3px ${display.color}22`;
+                    (e.currentTarget as HTMLButtonElement).style.boxShadow =
+                      `0 0 0 3px ${display.color}22`;
                   }}
                   onMouseLeave={(e) => {
                     (e.currentTarget as HTMLButtonElement).style.borderColor = "#CBD5E1";
@@ -184,7 +198,9 @@ export default function Welcome() {
                           gap: "4px",
                         }}
                       >
-                        <span style={{ color: display.color, marginTop: "1px", flexShrink: 0 }}>›</span>
+                        <span style={{ color: display.color, marginTop: "1px", flexShrink: 0 }}>
+                          ›
+                        </span>
                         {b}
                       </li>
                     ))}
@@ -206,8 +222,8 @@ export default function Welcome() {
               color: "#92400E",
             }}
           >
-            <strong>Note:</strong> The persona only changes what you see first. Permissions are separate: the
-            first account is Admin.
+            <strong>Note:</strong> The persona only changes what you see first. Permissions are
+            separate: the first account is Admin.
           </div>
         </div>
       </main>
