@@ -37,48 +37,50 @@ export default function Signin() {
   return (
     <>
       {/* Global top strip */}
-      <div className="top-strip">
-        VM INTELLECT&nbsp;&nbsp;·&nbsp;&nbsp;Local-First · works offline
-      </div>
+      <div className="top-strip">VM INTELLECT&nbsp;&nbsp;·&nbsp;&nbsp;Local-First · works offline</div>
 
-
-      <form onSubmit={onSubmit} noValidate className="mt-6 space-y-4">
-        <Field
-          label="Username"
-          autoComplete="username"
-          error={errors.username?.message}
-          {...register("username")}
-        />
-        <Field
-          label="Password"
-          type="password"
-          autoComplete="current-password"
-          error={errors.password?.message}
-          {...register("password")}
-        />
-        {serverError && (
-          <p role="alert" className="text-sm text-danger">
-            {serverError}
-
-      <main style={{ minHeight: "calc(100vh - 33px)", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "2rem 1rem" }}>
+      <main
+        style={{
+          minHeight: "calc(100vh - 33px)",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          justifyContent: "center",
+          padding: "2rem 1rem",
+        }}
+      >
         <div className="card" style={{ width: "100%", maxWidth: "420px" }}>
-          <div style={{ background: "linear-gradient(90deg, #0B2A5C, #6FA8E6)", height: "3px", borderRadius: "2px 2px 0 0", margin: "-1.5rem -1.5rem 1.5rem" }} />
+          <div
+            style={{
+              background: "linear-gradient(90deg, #0B2A5C, #6FA8E6)",
+              height: "3px",
+              borderRadius: "2px 2px 0 0",
+              margin: "-1.5rem -1.5rem 1.5rem",
+            }}
+          />
 
           {/* Logo */}
           <div style={{ display: "flex", justifyContent: "center", marginBottom: "1.5rem" }}>
             <BrandLogo variant="lockup" size={140} />
           </div>
 
-          <h1 className="text-2xl font-semibold" style={{ color: "#0B2A5C", marginBottom: "0.25rem", textAlign: "center" }}>
+          <h1
+            className="text-2xl font-semibold"
+            style={{ color: "#0B2A5C", marginBottom: "0.25rem", textAlign: "center" }}
+          >
             Sign in
           </h1>
           <p className="text-sm" style={{ color: "#64748b", textAlign: "center", marginBottom: "1.5rem" }}>
             Local account on this computer.
-
           </p>
 
           <form onSubmit={onSubmit} noValidate className="space-y-4">
-            <Field label="Username" autoComplete="username" error={errors.username?.message} {...register("username")} />
+            <Field
+              label="Username"
+              autoComplete="username"
+              error={errors.username?.message}
+              {...register("username")}
+            />
             <Field
               label="Password"
               type="password"

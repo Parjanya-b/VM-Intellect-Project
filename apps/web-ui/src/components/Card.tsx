@@ -8,11 +8,7 @@ interface CardProps extends HTMLAttributes<HTMLDivElement> {
 
 export function Card({ children, accentTop = false, className = "", style, ...props }: CardProps) {
   return (
-    <div
-      className={`card ${className}`}
-      style={style}
-      {...props}
-    >
+    <div className={`card ${className}`} style={style} {...props}>
       {accentTop && <div className="card-accent-top" />}
       {children}
     </div>

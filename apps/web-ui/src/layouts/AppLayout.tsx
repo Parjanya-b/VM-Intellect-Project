@@ -12,9 +12,7 @@ export default function AppLayout() {
   return (
     <div className="min-h-screen">
       {/* Global top strip */}
-      <div className="top-strip">
-        VM INTELLECT&nbsp;&nbsp;·&nbsp;&nbsp;Local-First · works offline
-      </div>
+      <div className="top-strip">VM INTELLECT&nbsp;&nbsp;·&nbsp;&nbsp;Local-First · works offline</div>
 
       {/* Main header */}
       <header className="border-b border-line bg-white relative">
@@ -31,7 +29,11 @@ export default function AppLayout() {
         />
         <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-3">
           {/* Logo area */}
-          <Link to="/dashboard" className="flex items-center gap-3 no-underline" aria-label="VM Intellect home">
+          <Link
+            to="/dashboard"
+            className="flex items-center gap-3 no-underline"
+            aria-label="VM Intellect home"
+          >
             <BrandLogo variant="mark" size={36} />
             <span className="flex flex-col leading-none">
               <span style={{ color: "#0B2A5C", fontWeight: 700, fontSize: "16px", letterSpacing: "-0.01em" }}>
@@ -53,7 +55,10 @@ export default function AppLayout() {
             )}
             <span className="text-ink">
               {user?.fullName}{" "}
-              <span className="font-mono text-xs uppercase" style={{ color: "#6FA8E6", background: "#EEF5FC", padding: "2px 6px", borderRadius: "4px" }}>
+              <span
+                className="font-mono text-xs uppercase"
+                style={{ color: "#6FA8E6", background: "#EEF5FC", padding: "2px 6px", borderRadius: "4px" }}
+              >
                 ({user?.role})
               </span>
             </span>

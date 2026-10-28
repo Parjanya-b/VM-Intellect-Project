@@ -5,33 +5,35 @@
   --font-mono: ui-monospace, "Cascadia Code", Consolas, monospace;
 
   /* ── Brand scale ── */
-  --color-brand-900: #0B2A5C;
-  --color-brand-700: #1A4A8A;
-  --color-brand-600: #3F7FCB;
-  --color-brand-400: #6FA8E6;
-  --color-brand-100: #D6E6F8;
-  --color-brand-50: #EEF5FC;
+  --color-brand-900: #0b2a5c;
+  --color-brand-700: #1a4a8a;
+  --color-brand-600: #3f7fcb;
+  --color-brand-400: #6fa8e6;
+  --color-brand-100: #d6e6f8;
+  --color-brand-50: #eef5fc;
 
   /* ── Semantic tokens (kept for existing component compatibility) ── */
-  --color-ink: #0B2A5C;
+  --color-ink: #0b2a5c;
   --color-muted: #64748b;
-  --color-line: #CBD5E1;
+  --color-line: #cbd5e1;
   --color-paper: #ffffff;
-  --color-paper-dark: #F0F4F8;
-  --color-accent: #0B2A5C;
-  --color-accent-dark: #071D3F;
+  --color-paper-dark: #f0f4f8;
+  --color-accent: #0b2a5c;
+  --color-accent-dark: #071d3f;
   --color-ok: #15803d;
   --color-danger: #b91c1c;
 
   /* ── Persona accent colours ── */
-  --color-persona-student: #3B82F6;
-  --color-persona-technician: #0D9488;
-  --color-persona-engineer: #16A34A;
-  --color-persona-manufacturer: #D97706;
-  --color-persona-researcher: #7C3AED;
+  --color-persona-student: #3b82f6;
+  --color-persona-technician: #0d9488;
+  --color-persona-engineer: #16a34a;
+  --color-persona-manufacturer: #d97706;
+  --color-persona-researcher: #7c3aed;
 }
 
-*, *::before, *::after {
+*,
+*::before,
+*::after {
   box-sizing: border-box;
 }
 
