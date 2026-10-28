@@ -1,13 +1,34 @@
 import { Link } from "react-router-dom";
+import { BrandLogo } from "../components/BrandLogo";
 
 export default function ErrorPage() {
   return (
-    <main className="mx-auto max-w-2xl px-6 py-16">
-      <h1 className="text-2xl font-semibold">Page not found</h1>
-      <p className="mt-2 text-muted">That screen doesn't exist.</p>
-      <Link to="/" className="mt-4 inline-block text-accent hover:underline">
-        Go to start
-      </Link>
+    <main style={{ minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", padding: "2rem 1rem" }}>
+      <div className="card" style={{ width: "100%", maxWidth: "440px", textAlign: "center" }}>
+        <div style={{ background: "linear-gradient(90deg, #0B2A5C, #6FA8E6)", height: "3px", borderRadius: "2px 2px 0 0", margin: "-1.5rem -1.5rem 1.5rem" }} />
+        <div style={{ display: "flex", justifyContent: "center", marginBottom: "1rem" }}>
+          <BrandLogo variant="mark" size={56} />
+        </div>
+        <h1 className="text-2xl font-semibold" style={{ color: "#0B2A5C", marginBottom: "0.5rem" }}>Page not found</h1>
+        <p style={{ color: "#64748b", marginBottom: "1.25rem" }}>That screen doesn't exist.</p>
+        <Link
+          to="/"
+          style={{
+            display: "inline-flex",
+            alignItems: "center",
+            background: "#0B2A5C",
+            color: "#ffffff",
+            padding: "8px 20px",
+            borderRadius: "8px",
+            fontSize: "14px",
+            fontWeight: 500,
+            textDecoration: "none",
+            transition: "background 0.15s",
+          }}
+        >
+          Go to start
+        </Link>
+      </div>
     </main>
   );
 }

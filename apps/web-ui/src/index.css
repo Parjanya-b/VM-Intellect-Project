@@ -3,20 +3,111 @@
 @theme {
   --font-sans: ui-sans-serif, system-ui, "Segoe UI", Roboto, sans-serif;
   --font-mono: ui-monospace, "Cascadia Code", Consolas, monospace;
-  --color-ink: #0f172a;
+
+  /* ── Brand scale ── */
+  --color-brand-900: #0B2A5C;
+  --color-brand-700: #1A4A8A;
+  --color-brand-600: #3F7FCB;
+  --color-brand-400: #6FA8E6;
+  --color-brand-100: #D6E6F8;
+  --color-brand-50: #EEF5FC;
+
+  /* ── Semantic tokens (kept for existing component compatibility) ── */
+  --color-ink: #0B2A5C;
   --color-muted: #64748b;
-  --color-line: #e2e8f0;
-  --color-paper: #f8fafc;
-  --color-paper-dark: #f1f5f9;
-  --color-accent: #1d4ed8;
-  --color-accent-dark: #1e40af;
+  --color-line: #CBD5E1;
+  --color-paper: #ffffff;
+  --color-paper-dark: #F0F4F8;
+  --color-accent: #0B2A5C;
+  --color-accent-dark: #071D3F;
   --color-ok: #15803d;
   --color-danger: #b91c1c;
+
+  /* ── Persona accent colours ── */
+  --color-persona-student: #3B82F6;
+  --color-persona-technician: #0D9488;
+  --color-persona-engineer: #16A34A;
+  --color-persona-manufacturer: #D97706;
+  --color-persona-researcher: #7C3AED;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+html {
+  color-scheme: light;
 }
 
 body {
   margin: 0;
-  background: var(--color-paper);
+  background-color: #ffffff;
+  background-image:
+    linear-gradient(rgba(11, 42, 92, 0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(11, 42, 92, 0.04) 1px, transparent 1px);
+  background-size: 24px 24px;
   color: var(--color-ink);
   font-family: var(--font-sans);
+  min-height: 100vh;
+}
+
+/* Global top strip */
+.top-strip {
+  background: var(--color-brand-900);
+  color: rgba(255, 255, 255, 0.85);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-align: center;
+  padding: 6px 16px;
+  user-select: none;
+}
+
+/* Card surface */
+.card {
+  background: #ffffff;
+  border: 1px solid var(--color-line);
+  border-radius: 0.75rem;
+  box-shadow: 0 1px 4px rgba(11, 42, 92, 0.06);
+  padding: 1.5rem;
+}
+
+/* Section header band */
+.section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--color-brand-50);
+  border: 1px solid var(--color-brand-100);
+  border-radius: 0.5rem;
+  padding: 0.5rem 1rem;
+  margin-bottom: 1rem;
+}
+
+.section-header__label {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-brand-900);
+}
+
+.section-header__caption {
+  font-size: 11px;
+  color: var(--color-muted);
+}
+
+/* Gradient accent line on top of cards */
+.card-accent-top {
+  background: linear-gradient(90deg, var(--color-brand-900), var(--color-brand-400));
+  height: 3px;
+  border-radius: 2px 2px 0 0;
+  margin: -1.5rem -1.5rem 1.5rem;
+}
+
+/* Focus ring */
+:focus-visible {
+  outline: 2px solid var(--color-brand-600);
+  outline-offset: 2px;
 }
