@@ -2,6 +2,7 @@
   "name": "vm-intellect",
   "private": true,
   "version": "0.1.0",
+  "packageManager": "pnpm@12.16.1",
   "scripts": {
     "dev": "pnpm -r --parallel --if-present dev",
     "typecheck": "pnpm -r --if-present typecheck",
