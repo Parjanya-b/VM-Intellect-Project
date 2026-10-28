@@ -15,6 +15,7 @@ export class AppError extends Error {
 }
 
 export const errorHandler: ErrorRequestHandler = (err, _req, res, _next) => {
+  void _next;
   const traceId = res.locals.traceId as string;
 
   if (err instanceof AppError) {

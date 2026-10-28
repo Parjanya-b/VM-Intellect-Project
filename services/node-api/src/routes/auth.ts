@@ -7,7 +7,7 @@ import { config } from "../config";
 import { AppError } from "../errors";
 import { parseBody } from "../validate";
 import { audit } from "../audit";
-import { createSession, requireAuth, sha256, toPublicUser, type UserRow } from "../auth/session";
+import { createSession, requireAuth, toPublicUser, type UserRow } from "../auth/session";
 
 export const authRouter = Router();
 
