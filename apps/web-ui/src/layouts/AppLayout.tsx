@@ -27,8 +27,8 @@ export default function AppLayout() {
             <Button
               variant="secondary"
               onClick={async () => {
-                await signOut();
                 navigate("/welcome", { replace: true });
+                await signOut();
               }}
             >
               Sign out
