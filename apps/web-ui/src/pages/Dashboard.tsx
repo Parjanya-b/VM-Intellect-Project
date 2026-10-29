@@ -5,6 +5,7 @@ import type { HealthResponse } from "@vmi/contracts";
 import { api } from "../lib/api";
 import { useAuth } from "../auth/AuthContext";
 import { getPersona, PERSONA_INFO } from "../lib/persona";
+import JobsPanel from "../components/JobsPanel";
 
 const ACTIONS = [
   {
@@ -59,22 +60,6 @@ function StatusItem({ label, value, ok }: { label: string; value: string; ok?: b
         {value}
       </p>
     </div>
-  );
-}
-
-function EmptyPanel({ title, text }: { title: string; text: string }) {
-  return (
-    <section className="card">
-      <h2
-        className="font-semibold"
-        style={{ color: "#0B2A5C", fontSize: "15px", marginBottom: "0.5rem" }}
-      >
-        {title}
-      </h2>
-      <p className="text-sm" style={{ color: "#64748b" }}>
-        {text}
-      </p>
-    </section>
   );
 }
 
@@ -191,11 +176,16 @@ export default function Dashboard() {
           gridTemplateColumns: "repeat(auto-fill, minmax(300px, 1fr))",
         }}
       >
-        <EmptyPanel
+        <JobsPanel
           title="Recent jobs"
-          text="No jobs yet. Start with New job to see your work here."
+          emptyText="No jobs yet. Start with New job to see your work here."
+          params={{}}
         />
-        <EmptyPanel title="Waiting for your review" text="Nothing needs your review right now." />
+        <JobsPanel
+          title="Waiting for your review"
+          emptyText="Nothing needs your review right now."
+          params={{ status: "needs_review" }}
+        />
       </div>
     </main>
   );
