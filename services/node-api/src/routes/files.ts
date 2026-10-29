@@ -137,3 +137,70 @@ filesRouter.post("/jobs/:id/files", requireAuth, async (req, res) => {
     fs.rmSync(tmp.path, { force: true }); // no-op when the file was moved
   }
 });
+
+const CONTENT_TYPES: Record<string, string> = {
+  pdf: "application/pdf",
+  png: "image/png",
+  jpg: "image/jpeg",
+  jpeg: "image/jpeg",
+  csv: "text/csv; charset=utf-8",
+  xlsx: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+};
+
+/** Find a file the user may access. Errors are always a plain 404. */
+function loadFile(id: string, user: PublicUser) {
+  const file = db
+    .prepare(`SELECT ${FILE_COLUMNS} FROM files WHERE id = ? AND deleted_at IS NULL`)
+    .get(id) as FileRow | undefined;
+  if (!file) throw new AppError(404, "FILE_NOT_FOUND", "File not found.");
+  try {
+    return { file, job: loadJob(file.job_id, user) };
+  } catch {
+    throw new AppError(404, "FILE_NOT_FOUND", "File not found.");
+  }
+}
+
+filesRouter.get("/files/:id/preview", requireAuth, (req, res, next) => {
+  const { file } = loadFile(req.params.id as string, res.locals.user as PublicUser);
+  const abs = path.join(config.uploadsDir, file.id); // path comes from the DB id only
+  if (!fs.existsSync(abs))
+    throw new AppError(404, "FILE_MISSING", "The stored file is missing on disk.");
+
+  const inlineOk = file.kind === "pdf" || file.kind === "image";
+  const asDownload = req.query.download === "1" || !inlineOk;
+  res.setHeader("Content-Type", CONTENT_TYPES[file.format] ?? "application/octet-stream");
+  res.setHeader(
+    "Content-Disposition",
+    `${asDownload ? "attachment" : "inline"}; filename*=UTF-8''${encodeURIComponent(file.original_name)}`,
+  );
+  res.setHeader("X-Content-Type-Options", "nosniff");
+  res.setHeader("Cache-Control", "private, no-store");
+  // dotfiles: "allow" because the data folder path contains ".data"
+  res.sendFile(abs, { dotfiles: "allow" }, (err) => {
+    if (err && !res.headersSent) next(err);
+  });
+});
+
+filesRouter.delete("/files/:id", requireAuth, (req, res) => {
+  const user = res.locals.user as PublicUser;
+  const { file, job } = loadFile(req.params.id as string, user);
+  assertCanEdit(job, user);
+  if (job.status === "queued" || job.status === "processing") {
+    throw new AppError(409, "JOB_BUSY", "This job is being processed. Try again when it finishes.");
+  }
+
+  db.transaction(() => {
+    db.prepare(`UPDATE files SET deleted_at = ${NOW} WHERE id = ?`).run(file.id);
+    const { n } = db
+      .prepare("SELECT COUNT(*) AS n FROM files WHERE job_id = ? AND deleted_at IS NULL")
+      .get(job.id) as { n: number };
+    db.prepare(
+      `UPDATE jobs SET status = CASE WHEN status = 'uploaded' AND ? = 0 THEN 'draft' ELSE status END,
+                       updated_at = ${NOW} WHERE id = ?`,
+    ).run(n, job.id);
+  })();
+  fs.rmSync(path.join(config.uploadsDir, file.id), { force: true });
+
+  audit(user.id, "file.delete", res.locals.traceId, `${job.id}/${file.id}`);
+  res.status(204).end();
+});
