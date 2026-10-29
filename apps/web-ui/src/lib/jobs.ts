@@ -1,4 +1,4 @@
-import type { CreateJobRequest, Job, JobListResponse, JobStatus } from "@vmi/contracts";
+import type { CreateJobRequest, Job, JobDetail, JobListResponse, JobStatus } from "@vmi/contracts";
 import { api } from "./api";
 
 export const STATUS_LABEL: Record<JobStatus, string> = {
@@ -28,7 +28,7 @@ export function listJobs(p: ListParams = {}) {
   return api<JobListResponse>(`/jobs?${qs.toString()}`);
 }
 
-export const getJob = (id: string) => api<Job>(`/jobs/${id}`);
+export const getJob = (id: string) => api<JobDetail>(`/jobs/${id}`);
 export const createJob = (body: CreateJobRequest) => api<Job>("/jobs", { method: "POST", body });
 export const archiveJob = (id: string) => api<void>(`/jobs/${id}`, { method: "DELETE" });
 
