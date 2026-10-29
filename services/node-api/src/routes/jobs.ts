@@ -3,6 +3,7 @@ import { randomUUID } from "node:crypto";
 import {
   CreateJobRequestSchema,
   ListJobsQuerySchema,
+  UpdateJobRequestSchema,
   type Job,
   type JobConstraints,
   type JobListResponse,
@@ -114,4 +115,35 @@ jobsRouter.get("/", (req, res) => {
 
 jobsRouter.get("/:id", (req, res) => {
   res.json(toJob(loadJob(req.params.id, res.locals.user as PublicUser)));
+});
+
+const NOW = "strftime('%Y-%m-%dT%H:%M:%fZ','now')";
+
+jobsRouter.patch("/:id", (req, res) => {
+  const user = res.locals.user as PublicUser;
+  const row = loadJob(req.params.id, user);
+  assertCanEdit(row, user);
+  const body = parseBody(UpdateJobRequestSchema, req.body);
+
+  db.prepare(
+    `UPDATE jobs SET title = ?, goal = ?, constraints_json = ?, revision = revision + 1, updated_at = ${NOW}
+      WHERE id = ?`,
+  ).run(
+    body.title ?? row.title,
+    body.goal ?? row.goal,
+    body.constraints ? JSON.stringify(body.constraints) : row.constraints_json,
+    row.id,
+  );
+  audit(user.id, "job.update", res.locals.traceId, row.id);
+  res.json(toJob(loadJob(row.id, user)));
+});
+
+// "Delete" archives the job; nothing is erased.
+jobsRouter.delete("/:id", (req, res) => {
+  const user = res.locals.user as PublicUser;
+  const row = loadJob(req.params.id, user);
+  assertCanEdit(row, user);
+  db.prepare(`UPDATE jobs SET archived_at = ${NOW}, updated_at = ${NOW} WHERE id = ?`).run(row.id);
+  audit(user.id, "job.archive", res.locals.traceId, row.id);
+  res.status(204).end();
 });
