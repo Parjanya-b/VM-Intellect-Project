@@ -8,6 +8,7 @@ import Signin from "./pages/Signin";
 import Dashboard from "./pages/Dashboard";
 import JobsList from "./pages/JobsList";
 import NewJob from "./pages/NewJob";
+import JobOverview from "./pages/JobOverview";
 import ComingSoon from "./pages/ComingSoon";
 import ErrorPage from "./pages/ErrorPage";
 
@@ -33,6 +34,7 @@ export const router = createBrowserRouter([
           // Placeholders so the dashboard buttons don't 404 yet:
           { path: "/ask", element: <ComingSoon /> },
           { path: "/jobs/new", element: <NewJob /> },
+          { path: "/jobs/:id", element: <JobOverview /> },
           { path: "/knowledge", element: <ComingSoon /> },
         ],
       },
