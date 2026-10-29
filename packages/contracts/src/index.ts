@@ -75,3 +75,74 @@ export interface ApiErrorBody {
     details?: Record<string, string[]>;
   };
 }
+
+/* ---------- Jobs ---------- */
+export const JOB_STATUSES = [
+  "draft",
+  "uploaded",
+  "queued",
+  "processing",
+  "needs_review",
+  "completed",
+  "failed",
+  "interrupted",
+] as const;
+export const JobStatusSchema = z.enum(JOB_STATUSES);
+export type JobStatus = z.infer<typeof JobStatusSchema>;
+
+export const JobConstraintsSchema = z.object({
+  material: z.string().trim().max(80).optional(),
+  quantity: z.number().int().min(1).max(10_000_000).optional(),
+  tolerance: z.string().trim().max(80).optional(),
+});
+export type JobConstraints = z.infer<typeof JobConstraintsSchema>;
+
+export const CreateJobRequestSchema = z.object({
+  title: z.string().trim().min(3, "At least 3 characters").max(120, "At most 120 characters"),
+  goal: z.string().trim().min(5, "Describe the goal in a few words").max(2000),
+  constraints: JobConstraintsSchema.optional(),
+});
+export type CreateJobRequest = z.infer<typeof CreateJobRequestSchema>;
+
+export const UpdateJobRequestSchema = CreateJobRequestSchema.partial().refine(
+  (d) => Object.keys(d).length > 0,
+  { message: "Nothing to update" },
+);
+export type UpdateJobRequest = z.infer<typeof UpdateJobRequestSchema>;
+
+export const ListJobsQuerySchema = z.object({
+  q: z.string().trim().max(100).optional(),
+  status: JobStatusSchema.optional(),
+  limit: z.coerce.number().int().min(1).max(100).default(20),
+  offset: z.coerce.number().int().min(0).default(0),
+});
+
+export interface Job {
+  id: string;
+  ownerId: string;
+  ownerName: string;
+  title: string;
+  goal: string;
+  constraints: JobConstraints;
+  status: JobStatus;
+  revision: number;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface JobListResponse {
+  items: Job[];
+  total: number;
+}
+
+/* The 8 agent steps shown on the job overview timeline */
+export const AGENT_STEPS = [
+  { key: "understanding", label: "Understanding", path: "understand" },
+  { key: "drawing", label: "Drawing Analysis", path: "drawing" },
+  { key: "selection", label: "Material and Machine", path: "selection" },
+  { key: "planning", label: "Process Planning", path: "plan" },
+  { key: "cam", label: "CAM Support", path: "cam" },
+  { key: "simulation", label: "Simulation", path: "simulation" },
+  { key: "optimization", label: "Optimization", path: "optimize" },
+  { key: "reporting", label: "Reporting", path: "report" },
+] as const;
