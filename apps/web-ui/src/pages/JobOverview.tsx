@@ -5,6 +5,8 @@ import { archiveJob, formatDate, getJob } from "../lib/jobs";
 import { useAuth } from "../auth/AuthContext";
 import StatusBadge from "../components/StatusBadge";
 import { Button } from "../components/Button";
+import FileList from "../components/FileList";
+import FileUploader from "../components/FileUploader";
 
 export default function JobOverview() {
   const { id = "" } = useParams();
@@ -73,6 +75,19 @@ export default function JobOverview() {
             <dd>{c.tolerance ?? "—"}</dd>
           </div>
         </dl>
+      </section>
+
+      <section className="mt-6 rounded-lg border border-line bg-white p-5">
+        <h2 className="font-semibold">Files</h2>
+        <div className="mt-3 space-y-4">
+          {canEdit && (
+            <FileUploader
+              jobId={job.id}
+              onUploaded={() => void qc.invalidateQueries({ queryKey: ["job", id] })}
+            />
+          )}
+          <FileList jobId={job.id} files={job.files} canEdit={canEdit} />
+        </div>
       </section>
 
       <section className="mt-6 rounded-lg border border-line bg-white p-5">

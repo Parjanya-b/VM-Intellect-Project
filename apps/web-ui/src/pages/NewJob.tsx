@@ -1,17 +1,19 @@
 import { useState, type FormEvent } from "react";
 import { useNavigate } from "react-router-dom";
-import { useQueryClient } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { CreateJobRequestSchema, type JobConstraints } from "@vmi/contracts";
+import { CreateJobRequestSchema, type Job, type JobConstraints } from "@vmi/contracts";
 import { ApiError } from "../lib/api";
-import { createJob } from "../lib/jobs";
+import { createJob, getJob } from "../lib/jobs";
 import { Button } from "../components/Button";
 import { Field } from "../components/Field";
 import { Textarea } from "../components/Textarea";
+import FileList from "../components/FileList";
+import FileUploader from "../components/FileUploader";
 
-const TOTAL_STEPS = 2;
+const TOTAL_STEPS = 3;
 
 // Form values are strings; they are converted to the API shape on submit.
 const schema = z.object({
@@ -32,7 +34,8 @@ type FormValues = z.infer<typeof schema>;
 export default function NewJob() {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
-  const [step, setStep] = useState<1 | 2>(1);
+  const [step, setStep] = useState<1 | 2 | 3>(1);
+  const [created, setCreated] = useState<Job | null>(null);
   const [serverError, setServerError] = useState<string | null>(null);
 
   const {
@@ -58,7 +61,8 @@ export default function NewJob() {
     try {
       const job = await createJob({ title: v.title, goal: v.goal, constraints });
       await queryClient.invalidateQueries({ queryKey: ["jobs"] });
-      navigate(`/jobs/${job.id}`);
+      setCreated(job);
+      setStep(3);
     } catch (e) {
       setServerError(e instanceof ApiError ? e.message : "Unexpected error.");
     }
@@ -78,67 +82,95 @@ export default function NewJob() {
     <main className="mx-auto max-w-2xl px-6 py-8">
       <h1 className="text-2xl font-semibold">New job</h1>
       <p className="mt-1 text-sm text-muted">
-        Step {step} of {TOTAL_STEPS} · {step === 1 ? "Details" : "Constraints (optional)"}
+        Step {step} of {TOTAL_STEPS} ·{" "}
+        {step === 1 ? "Details" : step === 2 ? "Constraints (optional)" : "Files (optional)"}
       </p>
 
-      <form
-        onSubmit={submit}
-        noValidate
-        className="mt-6 space-y-4 rounded-lg border border-line bg-white p-6"
-      >
-        <div className={step === 1 ? "space-y-4" : "hidden"}>
-          <Field label="Title" error={errors.title?.message} {...register("title")} />
-          <Textarea
-            label="Goal"
-            placeholder="What do you want to achieve?"
-            error={errors.goal?.message}
-            {...register("goal")}
-          />
-        </div>
+      {step === 3 && created ? (
+        <FilesStep job={created} onFinish={() => navigate(`/jobs/${created.id}`)} />
+      ) : (
+        <form
+          onSubmit={submit}
+          noValidate
+          className="mt-6 space-y-4 rounded-lg border border-line bg-white p-6"
+        >
+          <div className={step === 1 ? "space-y-4" : "hidden"}>
+            <Field label="Title" error={errors.title?.message} {...register("title")} />
+            <Textarea
+              label="Goal"
+              placeholder="What do you want to achieve?"
+              error={errors.goal?.message}
+              {...register("goal")}
+            />
+          </div>
 
-        <div className={step === 2 ? "space-y-4" : "hidden"}>
-          <Field label="Material" error={errors.material?.message} {...register("material")} />
-          <Field
-            label="Quantity"
-            inputMode="numeric"
-            error={errors.quantity?.message}
-            {...register("quantity")}
-          />
-          <Field
-            label="Tolerance"
-            placeholder="e.g. ±0.05 mm"
-            error={errors.tolerance?.message}
-            {...register("tolerance")}
-          />
-        </div>
+          <div className={step === 2 ? "space-y-4" : "hidden"}>
+            <Field label="Material" error={errors.material?.message} {...register("material")} />
+            <Field
+              label="Quantity"
+              inputMode="numeric"
+              error={errors.quantity?.message}
+              {...register("quantity")}
+            />
+            <Field
+              label="Tolerance"
+              placeholder="e.g. ±0.05 mm"
+              error={errors.tolerance?.message}
+              {...register("tolerance")}
+            />
+          </div>
 
-        {serverError && (
-          <p role="alert" className="text-sm text-danger">
-            {serverError}
-          </p>
-        )}
-
-        <div className="flex justify-between pt-2">
-          {step === 1 ? (
-            <Button type="button" variant="secondary" onClick={() => navigate("/jobs")}>
-              Cancel
-            </Button>
-          ) : (
-            <Button type="button" variant="secondary" onClick={() => setStep(1)}>
-              Back
-            </Button>
+          {serverError && (
+            <p role="alert" className="text-sm text-danger">
+              {serverError}
+            </p>
           )}
-          {step === 1 ? (
-            <Button key="next" type="button" onClick={() => void next()}>
-              Next
-            </Button>
-          ) : (
-            <Button key="submit" type="submit" disabled={isSubmitting}>
-              {isSubmitting ? "Creating…" : "Create job"}
-            </Button>
-          )}
-        </div>
-      </form>
+
+          <div className="flex justify-between pt-2">
+            {step === 1 ? (
+              <Button type="button" variant="secondary" onClick={() => navigate("/jobs")}>
+                Cancel
+              </Button>
+            ) : (
+              <Button type="button" variant="secondary" onClick={() => setStep(1)}>
+                Back
+              </Button>
+            )}
+            {step === 1 ? (
+              <Button key="next" type="button" onClick={() => void next()}>
+                Next
+              </Button>
+            ) : (
+              <Button key="submit" type="submit" disabled={isSubmitting}>
+                {isSubmitting ? "Creating…" : "Create job"}
+              </Button>
+            )}
+          </div>
+        </form>
+      )}
     </main>
+  );
+}
+
+function FilesStep({ job, onFinish }: { job: Job; onFinish: () => void }) {
+  const qc = useQueryClient();
+  const detail = useQuery({ queryKey: ["job", job.id], queryFn: () => getJob(job.id) });
+  return (
+    <div className="mt-6 space-y-4 rounded-lg border border-line bg-white p-6">
+      <p className="text-sm text-muted">
+        Job <span className="font-medium text-ink">{job.title}</span> was created. Add drawings and
+        data now, or skip and add them later.
+      </p>
+      <FileUploader
+        jobId={job.id}
+        onUploaded={() => void qc.invalidateQueries({ queryKey: ["job", job.id] })}
+      />
+      <FileList jobId={job.id} files={detail.data?.files ?? []} canEdit />
+      <div className="flex justify-end pt-2">
+        <Button type="button" onClick={onFinish}>
+          Finish
+        </Button>
+      </div>
+    </div>
   );
 }
