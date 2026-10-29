@@ -25,7 +25,8 @@ test("create a job, find it, open it and archive it", async ({ page }) => {
   await page.getByLabel("Material").fill("Al 6061");
   await page.getByLabel("Quantity").fill("200");
   await page.getByRole("button", { name: "Create job" }).click();
-
+  await expect(page.getByText(/Step 3 of 3/)).toBeVisible();
+  await page.getByRole("button", { name: "Finish" }).click();
   await expect(page).toHaveURL(/\/jobs\/[0-9a-f-]{36}$/);
   await expect(page.getByRole("heading", { name: "Bracket 6061 batch" })).toBeVisible();
   await expect(page.getByText("Al 6061")).toBeVisible();
