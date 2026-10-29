@@ -146,3 +146,46 @@ export const AGENT_STEPS = [
   { key: "optimization", label: "Optimization", path: "optimize" },
   { key: "reporting", label: "Reporting", path: "report" },
 ] as const;
+
+/* ---------- Files ---------- */
+export type FileKind = "pdf" | "image" | "spreadsheet" | "cad";
+
+export const FILE_TYPES: Record<string, { kind: FileKind }> = {
+  pdf: { kind: "pdf" },
+  png: { kind: "image" },
+  jpg: { kind: "image" },
+  jpeg: { kind: "image" },
+  csv: { kind: "spreadsheet" },
+  xlsx: { kind: "spreadsheet" },
+  step: { kind: "cad" },
+  stp: { kind: "cad" },
+  iges: { kind: "cad" },
+  igs: { kind: "cad" },
+};
+
+/** Safe lookup (Object.hasOwn stops names like "constructor" from matching). */
+export function fileKindFor(ext: string): FileKind | null {
+  return Object.hasOwn(FILE_TYPES, ext) ? FILE_TYPES[ext].kind : null;
+}
+
+export const ACCEPT_ATTR = Object.keys(FILE_TYPES)
+  .map((e) => `.${e}`)
+  .join(",");
+
+export const MAX_UPLOAD_BYTES = 50 * 1024 * 1024;
+
+export interface JobFile {
+  id: string;
+  jobId: string;
+  originalName: string;
+  format: string;
+  kind: FileKind;
+  sizeBytes: number;
+  sha256: string;
+  status: "stored" | "processing" | "processed" | "failed";
+  createdAt: string;
+}
+
+export interface JobDetail extends Job {
+  files: JobFile[];
+}
