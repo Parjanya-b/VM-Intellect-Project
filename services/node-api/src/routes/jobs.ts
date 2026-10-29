@@ -6,6 +6,7 @@ import {
   UpdateJobRequestSchema,
   type Job,
   type JobConstraints,
+  type JobDetail,
   type JobListResponse,
   type JobStatus,
   type PublicUser,
@@ -15,6 +16,7 @@ import { AppError } from "../errors";
 import { parseBody } from "../validate";
 import { audit } from "../audit";
 import { requireAuth } from "../auth/session";
+import { listJobFiles } from "../files/repo";
 
 export const jobsRouter = Router();
 jobsRouter.use(requireAuth);
@@ -114,7 +116,9 @@ jobsRouter.get("/", (req, res) => {
 });
 
 jobsRouter.get("/:id", (req, res) => {
-  res.json(toJob(loadJob(req.params.id, res.locals.user as PublicUser)));
+  const row = loadJob(req.params.id, res.locals.user as PublicUser);
+  const detail: JobDetail = { ...toJob(row), files: listJobFiles(row.id) };
+  res.json(detail);
 });
 
 const NOW = "strftime('%Y-%m-%dT%H:%M:%fZ','now')";
