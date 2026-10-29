@@ -129,11 +129,11 @@ export default function NewJob() {
             </Button>
           )}
           {step === 1 ? (
-            <Button type="button" onClick={() => void next()}>
+            <Button key="next" type="button" onClick={() => void next()}>
               Next
             </Button>
           ) : (
-            <Button type="submit" disabled={isSubmitting}>
+            <Button key="submit" type="submit" disabled={isSubmitting}>
               {isSubmitting ? "Creating…" : "Create job"}
             </Button>
           )}
