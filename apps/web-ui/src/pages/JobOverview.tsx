@@ -7,6 +7,7 @@ import StatusBadge from "../components/StatusBadge";
 import { Button } from "../components/Button";
 import FileList from "../components/FileList";
 import FileUploader from "../components/FileUploader";
+import RunsPanel from "../components/RunsPanel";
 
 export default function JobOverview() {
   const { id = "" } = useParams();
@@ -103,6 +104,8 @@ export default function JobOverview() {
           ))}
         </ol>
       </section>
+
+      <RunsPanel jobId={job.id} canEdit={canEdit} />
 
       {canEdit && (
         <div className="mt-8">
