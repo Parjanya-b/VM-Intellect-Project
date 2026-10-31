@@ -110,6 +110,17 @@ export default function Dashboard() {
             value={h?.lastBackupAt ? new Date(h.lastBackupAt).toLocaleString() : "No backup yet"}
           />
           <StatusItem label="Database schema" value={h ? `v${h.schemaVersion}` : "…"} />
+          <StatusItem
+            label="AI service"
+            value={
+              h?.aiService === "ok"
+                ? "Running"
+                : h?.aiService === "not_configured"
+                  ? "Not configured"
+                  : "Not running"
+            }
+            ok={h ? h.aiService === "ok" : undefined}
+          />
         </div>
       </div>
 

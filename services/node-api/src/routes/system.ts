@@ -1,10 +1,11 @@
 import { Router } from "express";
 import type { HealthResponse } from "@vmi/contracts";
 import { db } from "../db";
+import { pingPython } from "../python/client";
 
 export const systemRouter = Router();
 
-systemRouter.get("/health", (_req, res) => {
+systemRouter.get("/health", async (_req, res) => {
   const { n } = db.prepare("SELECT COUNT(*) AS n FROM users").get() as { n: number };
   const { v } = db
     .prepare("SELECT COALESCE(MAX(version), 0) AS v FROM schema_migrations")
@@ -19,6 +20,7 @@ systemRouter.get("/health", (_req, res) => {
     lastBackupAt: null, // comes from the backup module in Phase 4
     schemaVersion: v,
     hasUsers: n > 0,
+    aiService: await pingPython(),
   };
   res.json(body);
 });

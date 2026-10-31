@@ -80,3 +80,15 @@ export async function runAgentOnPython(
   }
   return parsed.data;
 }
+
+export async function pingPython(): Promise<"ok" | "down" | "not_configured"> {
+  if (!config.serviceToken) return "not_configured";
+  try {
+    const res = await fetch(`${config.pythonUrl}/health`, { signal: AbortSignal.timeout(1000) });
+    if (!res.ok) return "down";
+    const data = (await res.json()) as { tokenConfigured?: boolean };
+    return data.tokenConfigured ? "ok" : "not_configured";
+  } catch {
+    return "down";
+  }
+}

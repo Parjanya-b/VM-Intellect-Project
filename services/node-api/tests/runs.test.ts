@@ -219,4 +219,9 @@ describe("agent runs API", () => {
     expect(markInterruptedRuns()).toBe(1);
     expect((await api("get", "/runs/stale-run", aliceTok)).body.status).toBe("interrupted");
   });
+
+  it("reports the AI service in the health check", async () => {
+    const res = await api("get", "/system/health");
+    expect(res.body.aiService).toBe("ok"); // the fake server answers /health
+  });
 });

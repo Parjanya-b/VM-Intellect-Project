@@ -64,6 +64,7 @@ export interface HealthResponse {
   lastBackupAt: string | null;
   schemaVersion: number;
   hasUsers: boolean;
+  aiService: "ok" | "down" | "not_configured";
 }
 
 /* ---------- Standard error format (with trace ID) ---------- */
