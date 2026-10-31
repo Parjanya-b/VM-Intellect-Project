@@ -12,6 +12,8 @@ jobs:
       matrix:
         os: [ubuntu-latest, windows-latest]
     runs-on: ${{ matrix.os }}
+    env:
+      UV_FROZEN: "1"
     steps:
       - uses: actions/checkout@v4
       - uses: pnpm/action-setup@v4
@@ -19,6 +21,9 @@ jobs:
         with:
           node-version: lts/*
           cache: pnpm
+      - uses: astral-sh/setup-uv@v6
+        with:
+          enable-cache: true
       - run: pnpm install --frozen-lockfile
       - run: pnpm format:check
       - run: pnpm lint
@@ -28,6 +33,8 @@ jobs:
 
   e2e:
     runs-on: ubuntu-latest
+    env:
+      UV_FROZEN: "1"
     needs: check
     steps:
       - uses: actions/checkout@v4
@@ -36,6 +43,9 @@ jobs:
         with:
           node-version: lts/*
           cache: pnpm
+      - uses: astral-sh/setup-uv@v6
+        with:
+          enable-cache: true
       - run: pnpm install --frozen-lockfile
       - run: pnpm exec playwright install --with-deps chromium
       - run: pnpm e2e
