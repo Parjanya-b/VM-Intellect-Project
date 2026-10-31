@@ -6,6 +6,7 @@ import { systemRouter } from "./routes/system";
 import { authRouter } from "./routes/auth";
 import { jobsRouter } from "./routes/jobs";
 import { filesRouter } from "./routes/files";
+import { runsRouter } from "./routes/runs";
 
 export function createApp() {
   const app = express();
@@ -25,6 +26,7 @@ export function createApp() {
   app.use("/api/v1/auth", authRouter);
   app.use("/api/v1/jobs", jobsRouter);
   app.use("/api/v1", filesRouter);
+  app.use("/api/v1", runsRouter);
 
   app.use((_req, _res, next) => next(new AppError(404, "NOT_FOUND", "Route not found.")));
   app.use(errorHandler);
