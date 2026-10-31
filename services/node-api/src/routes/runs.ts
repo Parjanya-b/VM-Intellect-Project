@@ -139,3 +139,19 @@ runsRouter.get("/jobs/:id/runs", requireAuth, (req, res) => {
   const body: RunListResponse = { items: rows.map(toAgentRun) };
   res.json(body);
 });
+
+runsRouter.post("/runs/:id/cancel", requireAuth, (req, res) => {
+  const user = res.locals.user as PublicUser;
+  const { run, job } = loadRunWithAccess(req.params.id as string, user);
+  assertCanEdit(job, user);
+  if (run.status !== "running") {
+    throw new AppError(409, "RUN_NOT_RUNNING", "Only a running run can be cancelled.");
+  }
+  // Mark first, then abort: the waiting request then sees a run that is already cancelled.
+  db.prepare(
+    `UPDATE agent_runs SET status = 'cancelled', finished_at = ${NOW} WHERE id = ? AND status = 'running'`,
+  ).run(run.id);
+  activeRuns.get(run.id)?.abort();
+  audit(user.id, "run.cancel", res.locals.traceId, run.id);
+  res.json(toAgentRun(loadRunRow(run.id)));
+});
