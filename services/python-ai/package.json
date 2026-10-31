@@ -1,0 +1,10 @@
+{
+  "name": "@vmi/python-ai",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "uv run uvicorn app.main:app --host 127.0.0.1 --port 8001 --reload --reload-dir app",
+    "lint": "uv run ruff check . && uv run ruff format --check .",
+    "test": "uv run pytest"
+  }
+}
