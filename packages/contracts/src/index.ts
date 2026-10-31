@@ -189,3 +189,52 @@ export interface JobFile {
 export interface JobDetail extends Job {
   files: JobFile[];
 }
+
+/* ---------- Agent runs ---------- */
+export const AGENT_KEYS = [
+  "understanding",
+  "drawing",
+  "selection",
+  "planning",
+  "cam",
+  "simulation",
+  "optimization",
+  "reporting",
+] as const; // keep in sync with AGENT_STEPS above
+export const AgentKeySchema = z.enum(AGENT_KEYS);
+export type AgentKey = z.infer<typeof AgentKeySchema>;
+
+export const RUN_STATUSES = [
+  "running",
+  "completed",
+  "needs_review",
+  "failed",
+  "interrupted",
+  "cancelled",
+] as const;
+export const RunStatusSchema = z.enum(RUN_STATUSES);
+export type RunStatus = z.infer<typeof RunStatusSchema>;
+
+export const RunAgentRequestSchema = z.object({
+  input: z.record(z.string(), z.unknown()).optional(),
+});
+export type RunAgentRequest = z.infer<typeof RunAgentRequestSchema>;
+
+export interface AgentRun {
+  id: string;
+  jobId: string;
+  agent: AgentKey;
+  status: RunStatus;
+  output: Record<string, unknown> | null;
+  warnings: string[];
+  errorMessage: string | null;
+  modelVersion: string | null;
+  durationMs: number | null;
+  traceId: string;
+  createdAt: string;
+  finishedAt: string | null;
+}
+
+export interface RunListResponse {
+  items: AgentRun[];
+}
